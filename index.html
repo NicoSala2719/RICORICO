@@ -133,22 +133,22 @@ function render() {
 
     products[cat].forEach((p, i) => {
       html += `
-      <div class="bg-white p-4 rounded shadow">
+      <div class="bg-white p-3 rounded shadow">
 
-        <img src="${p.img}" class="h-28 w-full object-cover rounded mb-2"/>
+        <img src="${p.img}" class="h-28 w-full object-cover rounded mb-1"/>
 
         <p class="font-bold">${p.name}</p>
         <p>$${p.price}</p>
 
         <button onclick="addToCart('${p.name}',${p.price})"
-          class="bg-pink-500 text-white w-full mt-2">
+          class="bg-pink-500 text-white w-full mt-1">
           Agregar
         </button>
 
         ${isAdmin ? `
           <input type="number" value="${p.price}"
             onchange="updatePrice('${cat}',${i},this.value)"
-            class="border w-full mt-2"/>
+            class="border w-full mt-1"/>
 
           <button onclick="deleteProduct('${cat}',${i})"
             class="bg-red-500 text-white w-full mt-1">
