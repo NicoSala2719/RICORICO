@@ -87,6 +87,11 @@ function addToCart(name, price) {
   render();
 }
 
+function DeleteToCart(name,price) {
+  cart.push({name,price});
+  render();
+}
+
 function total() {
   return cart.reduce((a,b) => a + b.price, 0);
 }
@@ -154,7 +159,7 @@ function render() {
         </button>
 
         <button onclick="deleteToCart('${p.name}',${p.price})"
-          class="bg-pink-400 text-white w-full mt-1">
+          class="bg-red-500 text-white w-full mt-1">
           Borrar
         </button>
 
