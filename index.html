@@ -83,23 +83,39 @@ function loginAdmin() {
 }
 
 function addToCart(name, price) {
-  cart.push({ name, price });
+  const item = cart.find(p => p.name === name);
+
+  if (item) {
+    item.qty += 1;
+  } else {
+    cart.push({ name, price, qty: 1 });
+  }
+
   render();
 }
 
-function DeleteToCart(name, price) {
-  cart.push({name,price});
+function deleteToCart(name) {
+  const item = cart.find(p => p.name === name);
+
+  if (!item) return;
+
+  item.qty -= 1;
+
+  if (item.qty <= 0) {
+    cart = cart.filter(p => p.name !== name);
+  }
+
   render();
 }
 
 function total() {
-  return cart.reduce((a,b) => a + b.price, 0);
+  return cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 }
 
 function sendWhatsApp() {
   const text =
     "Pedido:%0A" +
-    cart.map(i => "- " + i.name).join("%0A") +
+    cart.map(i => "- " + i.name + " x" + i.qty).join("%0A") +
     "%0ATotal: $" + total();
 
   window.open(whatsappLink + text, "_blank");
@@ -151,18 +167,21 @@ function render() {
         <img src="${p.img}" class="h-28 w-full object-cover rounded mb-1"/>
 
         <p class="font-bold">${p.name}</p>
-        <p>$${p.price}</p>
+<p>$${p.price}</p>
+
+${cart.find(c => c.name === p.name) ? `
+  <p class="text-sm text-gray-600">
+    Cantidad: ${cart.find(c => c.name === p.name).qty}
+  </p>
+` : ""}
 
         <button onclick="addToCart('${p.name}',${p.price})"
           class="bg-pink-500 text-white w-full mt-1">
           Agregar
         </button>
 
-        <p class="font-bold">${p.name}</p>
-        <p>$${p.price}</p>
-
-        <button onclick="deleteToCart('${p.name}',${p.price})"
-          class="bg-pink-500 text-white w-full mt-1">
+        <button onclick="deleteToCart('${p.name}')"
+          class="bg-red-500 text-white w-full mt-1">
           Borrar
         </button>
 
