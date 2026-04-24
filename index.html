@@ -6,6 +6,32 @@
   <title>RicoRico 🍩</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RicoRico 🍩</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 🔥 ANIMACIONES -->
+  <style>
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade {
+      animation: fade 0.8s ease;
+    }
+
+    @keyframes slide {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-slide {
+      animation: slide 0.5s ease;
+    }
+  </style>
+
+</head>
 
 <body class="bg-pink-50">
 
@@ -131,12 +157,17 @@ function deleteProduct(cat, i) {
   render();
 }
 
+function clearCart() {
+  cart = [];
+  render();
+}
+
 function render() {
   let html = "";
 
   html += `
-  <div class="bg-pink-500 text-white text-center p-6">
-    <h1 class="text-4xl font-bold">🍩 RICORICO</h1>
+   <div class="bg-pink-500 text-white text-center p-6 mr-72 animate-fade">
+      <h1 class="text-4xl font-bold">🍩 RICORICO</h1>
 
     <button onclick="sendWhatsApp()"
       class="bg-white text-pink-600 px-4 py-2 mt-3 rounded">
@@ -162,7 +193,7 @@ function render() {
 
     products[cat].forEach((p, i) => {
       html += `
-      <div class="bg-white p-3 rounded shadow">
+      <div class="bg-white p-3 rounded shadow transform hover:scale-105 hover:shadow-xl transition duration-300">
 
         <img src="${p.img}" class="h-28 w-full object-cover rounded mb-1"/>
 
@@ -176,12 +207,12 @@ ${cart.find(c => c.name === p.name) ? `
 ` : ""}
 
         <button onclick="addToCart('${p.name}',${p.price})"
-          class="bg-pink-500 text-white w-full mt-1">
+          class="bg-pink-500 text-white w-full mt-1 transform hover:scale-105 active:scale-95 transition"
           Agregar
         </button>
 
         <button onclick="deleteToCart('${p.name}')"
-          class="bg-red-500 text-white w-full mt-1">
+          class="bg-pink-500 text-white w-full mt-1 transform hover:scale-105 active:scale-95 transition"
           Borrar
         </button>
 
@@ -191,7 +222,7 @@ ${cart.find(c => c.name === p.name) ? `
             class="border w-full mt-1"/>
 
           <button onclick="deleteProduct('${cat}',${i})"
-            class="bg-red-500 text-white w-full mt-1">
+            class="bg-red-500 text-white w-full mt-1 transform hover:scale-105 active:scale-95 transition"
             Eliminar
           </button>
         ` : ""}
@@ -230,7 +261,54 @@ html += `
 </a>
 `;
 
+html += `
+<div class="fixed top-0 right-0 w-72 h-full bg-white shadow-2xl p-4 overflow-y-auto z-50">
+
+  <h2 class="text-xl font-bold mb-3">🛒 Carrito</h2>
+
+  ${
+    cart.length === 0
+    ? `<p class="text-gray-500">Vacío</p>`
+    : cart.map(i => `
+        <div class="border-b py-2">
+          <p class="font-bold">${i.name}</p>
+
+          <div class="flex justify-between items-center mt-1">
+            <div class="flex items-center gap-2">
+              <button onclick="deleteToCart('${i.name}')"
+                class="bg-red-400 text-white px-2 rounded">-</button>
+
+              <span>${i.qty}</span>
+
+              <button onclick="addToCart('${i.name}',${i.price})"
+                class="bg-green-400 text-white px-2 rounded">+</button>
+            </div>
+
+            <span>$${i.price * i.qty}</span>
+          </div>
+        </div>
+      `).join("")
+  }
+
+  <div class="mt-4">
+    <p class="font-bold text-lg">Total: $${total()}</p>
+
+    <button onclick="sendWhatsApp()"
+      class="bg-green-500 text-white w-full mt-2 py-2 rounded">
+      Finalizar pedido
+    </button>
+
+    <button onclick="clearCart()"
+      class="bg-gray-300 w-full mt-2 py-2 rounded">
+      Vaciar carrito
+    </button>
+  </div>
+
+</div>
+`;
+
   document.body.innerHTML = html;
+  
 }
 
 render();
