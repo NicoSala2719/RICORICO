@@ -153,6 +153,11 @@ function render() {
           Agregar
         </button>
 
+        <button onclick="deleteToCart('${p.name}',${p.price})"
+          class="bg-pink-400 text-white w-full mt-1">
+          Borrar
+        </button>
+
         ${isAdmin ? `
           <input type="number" value="${p.price}"
             onchange="updatePrice('${cat}',${i},this.value)"
