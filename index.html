@@ -202,6 +202,34 @@ ${cart.find(c => c.name === p.name) ? `
     html += `</div></div>`;
   }
 
+html += `
+<a href="https://wa.me/5492617025691" target="_blank"
+   class="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+
+  <!-- Icono teléfono -->
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="h-6 w-6" fill="none" viewBox="0 0 24 24" 
+       stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.68l1.2 3.6a1 1 0 01-.27 1.05l-2.2 2.2a16 16 0 006.6 6.6l2.2-2.2a1 1 0 011.05-.27l3.6 1.2a1 1 0 01.68.95V19a2 2 0 01-2 2h-1C10.07 21 3 13.93 3 5V5z"/>
+  </svg>
+
+</a>
+`;
+
+html += `
+<a href="https://instagram.com/ricodulce__" target="_blank"
+   class="fixed bottom-20 right-5 bg-pink-500 hover:bg-pink-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+
+  <!-- Icono Instagram -->
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M7.75 2C4.57 2 2 4.57 2 7.75v8.5C2 19.43 4.57 22 7.75 22h8.5C19.43 22 22 19.43 22 16.25v-8.5C22 4.57 19.43 2 16.25 2h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm6.5-.75a1.25 1.25 0 11-2.5 0 1.25 1.25 0 012.5 0zM12 9a3 3 0 100 6 3 3 0 000-6z"/>
+  </svg>
+
+</a>
+`;
+
   document.body.innerHTML = html;
 }
 
