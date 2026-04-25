@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RicoRico 🍩</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .fade-update {
+      animation: fadeScale 0.25s ease;
+    }
+
+    @keyframes fadeScale {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+  
 </head>
 
 <body class="bg-pink-50">
@@ -110,6 +128,21 @@ function addToCart(name, price) {
     cart.push({ name, price, qty: 1 });
   }
 
+  // 👇 animación solo del producto agregado
+  setTimeout(() => {
+    const cards = document.querySelectorAll(".product-card");
+
+    cards.forEach(card => {
+      if (card.innerText.includes(name)) {
+        card.classList.add("fade-update");
+
+        setTimeout(() => {
+          card.classList.remove("fade-update");
+        }, 250);
+      }
+    });
+  }, 0);
+
   render();
 }
 
@@ -196,7 +229,7 @@ html += `
 
   products[cat].forEach((p, i) => {
     html += `
-    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+    <div class="product-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
 
       <img src="${p.img}" 
         class="w-full h-40 md:h-48 lg:h-52 object-cover transition-transform duration-300 hover:scale-105"/>
