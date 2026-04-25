@@ -115,6 +115,28 @@ function loginAdmin() {
   }
 }
 
+function updateName(cat, i, value) {
+  products[cat][i].name = value;
+  save();
+  render();
+}
+
+function createCategory() {
+  const name = prompt("Nombre de la nueva categoría:");
+
+  if (!name) return;
+
+  if (products[name]) {
+    alert("Esa categoría ya existe");
+    return;
+  }
+
+  products[name] = [];
+
+  save();   // importante si usas localStorage
+  render();
+}
+
 function addToCart(name, price) {
   const item = cart.find(p => p.name === name);
 
@@ -207,7 +229,16 @@ html += `
     Todos
   </button>
 
-  ${Object.keys(products).map(cat => `
+  ${isAdmin ? `
+  <button onclick="createCategory()"
+    class="bg-black text-white px-3 py-2 rounded-full text-sm font-semibold">
+    + Nueva categoría
+  </button>
+` : ""}
+
+  ${Object.keys(products)
+  .sort()
+  .map(cat => `
     <button onclick="selectedCategory='${cat}'; render()"
   class="${selectedCategory === cat 
     ? 'bg-pink-500 text-white' 
@@ -257,9 +288,15 @@ ${cart.find(c => c.name === p.name) ? `
 ` : ""}
 
 ${isAdmin ? `
-  <input type="number" value="${p.price}"
+  <input type="text"
+    value="${p.name}"
+    onchange="updateName('${cat}',${i},this.value)"
+    class="border w-full mt-1 rounded p-1"/>
+
+  <input type="number"
+    value="${p.price}"
     onchange="updatePrice('${cat}',${i},this.value)"
-    class="border w-full mt-1 rounded"/>
+    class="border w-full mt-1 rounded p-1"/>
 
   <button onclick="deleteProduct('${cat}',${i})"
     class="bg-red-700 text-white w-full mt-1 rounded">
