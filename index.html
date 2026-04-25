@@ -69,11 +69,18 @@ let products = {
     { name: "Magdalena Vainilla", price: 5000, img: "https://i.postimg.cc/26bdXLYb/Whats-App-Image-2026-04-23-at-19-52-34.jpg" }
   ],
 
-  postrecitos: [
+  tartitas: [
     { name: "Capchat", price: 3500, img: "https://i.postimg.cc/50Lg2QrN/Whats-App-Image-2026-04-23-at-20-03-40-(2).jpg" },
     { name: "Lemon Pie", price: 4000, img: "https://i.postimg.cc/VNS42VBk/Whats-App-Image-2026-04-23-at-20-03-40-(1).jpg" },
     { name: "Tarta de fruta", price: 3500, img: "https://i.postimg.cc/66Cb9FsC/Whats-App-Image-2026-04-23-at-20-03-40.jpg" },
-    { name: "Postrecitos (oreo,chocotorta,etc)", price: 1500, img: "https://i.postimg.cc/W4KY3vbw/Whats-App-Image-2026-04-23-at-20-03-52.jpg"}   
+    { name: "Tarta de coco", price: 3500, img: "https://i.postimg.cc/ZKFYG4JS/Whats-App-Image-2026-04-25-at-13-24-33.jpg" }
+  ],
+ 
+  Postrecitos: [
+    { name: "Postrecitos chocotorta", price: 1500, img: "https://estag.fimagenes.com/imagenesred/1994629_1.jpg?1" },
+    { name: "Postrecito oreo", price: 1500, img: "https://i.postimg.cc/3rtDPX1D/Whats-App-Image-2026-04-25-at-13-25-06.jpg" },
+    { name: "Postrecito Durazno", price: 1500, img: "https://i.postimg.cc/bwBgpXRQ/Whats-App-Image-2026-04-25-at-13-25-25.jpg" }
+    
   ]
 };
 
@@ -154,53 +161,77 @@ function render() {
   </div>
   `;
 
+html += `
+<div class="bg-white sticky top-0 z-50 shadow p-2 flex gap-2 overflow-x-auto">
+
+  <button onclick="selectedCategory=null; render()"
+    class="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold">
+    Todos
+  </button>
+
+  ${Object.keys(products).map(cat => `
+    <button onclick="selectedCategory='${cat}'; render()"
+      class="bg-pink-100 text-pink-600 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap hover:bg-pink-500 hover:text-white transition">
+      ${cat}
+    </button>
+  `).join("")}
+
+</div>
+`;
+
   for (let cat in products) {
-    html += `<div class="p-4">
-      <h2 class="text-xl font-bold text-pink-600 capitalize">${cat}</h2>
 
-      <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">`;
+  if (selectedCategory && selectedCategory !== cat) continue;
+  html += `<div class="p-4">
+    <h2 id="${cat}" class="text-xl font-bold text-pink-600 capitalize">${cat}</h2>
 
-    products[cat].forEach((p, i) => {
-      html += `
-      <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">`;
 
-        <img src="${p.img}" class="w-full h-40 md:h-48 lg:h-52 object-cover rounded mb-2 transition-transform duration-300 hover:scale-105"/>
+  products[cat].forEach((p, i) => {
+    html += `
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
 
+      <img src="${p.img}" 
+        class="w-full h-40 md:h-48 lg:h-52 object-cover transition-transform duration-300 hover:scale-105"/>
+
+      <div class="p-2">
         <p class="font-bold">${p.name}</p>
-<p>$${p.price}</p>
+        <p>$${p.price}</p>
 
-${cart.find(c => c.name === p.name) ? `
-  <p class="text-sm text-gray-600">
-    Cantidad: ${cart.find(c => c.name === p.name).qty}
-  </p>
-` : ""}
+        ${cart.find(c => c.name === p.name) ? `
+          <p class="text-sm text-gray-600">
+            Cantidad: ${cart.find(c => c.name === p.name).qty}
+          </p>
+        ` : ""}
 
         <button onclick="addToCart('${p.name}',${p.price})"
-          class="bg-pink-500 text-white w-full mt-1">
+          class="bg-pink-500 text-white w-full mt-1 rounded">
           Agregar
         </button>
 
         <button onclick="deleteToCart('${p.name}')"
-          class="bg-red-500 text-white w-full mt-1">
+          class="bg-red-500 text-white w-full mt-1 rounded">
           Borrar
         </button>
 
         ${isAdmin ? `
           <input type="number" value="${p.price}"
             onchange="updatePrice('${cat}',${i},this.value)"
-            class="border w-full mt-1"/>
+            class="border w-full mt-1 rounded"/>
 
           <button onclick="deleteProduct('${cat}',${i})"
-            class="bg-red-500 text-white w-full mt-1">
+            class="bg-red-700 text-white w-full mt-1 rounded">
             Eliminar
           </button>
         ` : ""}
       </div>
-      `;
-    });
 
-    html += `</div></div>`;
-  }
+    </div>
+    `;
+  });
+
+  html += `</div></div>`;
+}
 
 html += `
 <a href="https://wa.me/5492617025691" target="_blank"
