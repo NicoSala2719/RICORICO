@@ -101,6 +101,10 @@ function addToCart(name, price) {
   const item = cart.find(p => p.name === name);
 
   if (item) {
+    if (item.qty >= 10) {
+      alert("Máximo 10 unidades por producto");
+      return;
+    }
     item.qty += 1;
   } else {
     cart.push({ name, price, qty: 1 });
@@ -212,21 +216,23 @@ html += `
   Agregar
 </button>
 
-        <button onclick='deleteToCart("${p.name}")'
-  class="bg-red-500 text-white w-full mt-1 rounded">
-  Borrar
-</button>
+${cart.find(c => c.name === p.name) ? `
+  <button onclick='deleteToCart("${p.name}")'
+    class="bg-red-500 text-white w-full mt-1 rounded">
+    Borrar
+  </button>
+` : ""}
 
-        ${isAdmin ? `
-          <input type="number" value="${p.price}"
-            onchange="updatePrice('${cat}',${i},this.value)"
-            class="border w-full mt-1 rounded"/>
+${isAdmin ? `
+  <input type="number" value="${p.price}"
+    onchange="updatePrice('${cat}',${i},this.value)"
+    class="border w-full mt-1 rounded"/>
 
-          <button onclick="deleteProduct('${cat}',${i})"
-            class="bg-red-700 text-white w-full mt-1 rounded">
-            Eliminar
-          </button>
-        ` : ""}
+  <button onclick="deleteProduct('${cat}',${i})"
+    class="bg-red-700 text-white w-full mt-1 rounded">
+    Eliminar
+  </button>
+` : ""}
       </div>
 
     </div>
