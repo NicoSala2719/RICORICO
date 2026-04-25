@@ -138,10 +138,12 @@ function render() {
 <div class="bg-pink-500 text-white text-center p-6">
       <h1 class="text-4xl font-bold">🍩 RICORICO</h1>
 
-    <button onclick="sendWhatsApp()"
-      class="bg-white text-pink-600 px-4 py-2 mt-3 rounded">
-      Pedido ($${total()})
-    </button>
+    ${cart.length > 0 ? `
+     <button onclick="sendWhatsApp()"
+       class="bg-white text-pink-600 px-4 py-2 mt-3 rounded">
+       Pedido ($${total()})
+     </button>
+` : ""}
   </div>
   `;
 
